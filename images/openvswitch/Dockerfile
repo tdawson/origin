@@ -6,13 +6,7 @@
 
 FROM centos:centos7
 
-MAINTAINER Scott Dodson <sdodson@redhat.com>
-
-ADD https://copr.fedoraproject.org/coprs/maxamillion/origin-next/repo/epel-7/maxamillion-origin-next-epel-7.repo /etc/yum.repos.d/
-
-# TODO: systemd update from centos 7.1 -> 7.2 is broken, remove this once 7.2
-# base images land
-RUN yum swap -y -- remove systemd-container\* -- install systemd systemd-libs
+RUN curl -o /etc/yum.repos.d/CentOS-OpenShift-Origin.repo https://tdawson.fedorapeople.org/centos/CentOS-OpenShift-Origin.repo
 
 RUN INSTALL_PKGS="openvswitch" && \
     yum install -y $INSTALL_PKGS && \

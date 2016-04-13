@@ -16,8 +16,10 @@
 #
 FROM openshift/origin-base
 
+RUN curl -o /etc/yum.repos.d/CentOS-OpenShift-Origin.repo https://tdawson.fedorapeople.org/centos/CentOS-OpenShift-Origin.repo
+
 RUN INSTALL_PKGS="gettext automake make docker" && \
-    yum install -y --enablerepo=centosplus $INSTALL_PKGS && \
+    yum install -y $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum clean all
 ENV HOME /root

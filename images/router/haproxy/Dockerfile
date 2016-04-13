@@ -5,9 +5,15 @@
 #
 FROM openshift/origin-haproxy-router-base
 
+RUN curl -o /etc/yum.repos.d/CentOS-OpenShift-Origin.repo https://tdawson.fedorapeople.org/centos/CentOS-OpenShift-Origin.repo
+
+RUN INSTALL_PKGS="origin" && \
+    yum install -y $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    yum clean all
+
 ADD conf/ /var/lib/haproxy/conf/
 ADD reload-haproxy /var/lib/haproxy/reload-haproxy
-ADD bin/openshift /usr/bin/openshift
 
 #
 # Note: /var is changed to 777 to allow access when running this container as a non-root uid
@@ -15,8 +21,7 @@ ADD bin/openshift /usr/bin/openshift
 #       with gid support.
 # Note2: cap_net_bind_service must be granted to haproxy to allow a non-root uid to bind to low ports
 #
-RUN ln -s /usr/bin/openshift /usr/bin/openshift-router && \
-    chmod -R 777 /var && \
+RUN chmod -R 777 /var && \
     setcap 'cap_net_bind_service=ep' /usr/sbin/haproxy
 WORKDIR /var/lib/haproxy/conf
 

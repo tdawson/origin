@@ -4,7 +4,7 @@
 # The standard name for this image is openshift/dind
 #
 
-FROM fedora:23
+FROM centos:centos7
 
 ## Configure systemd to run in a container
 ENV container=docker
@@ -19,12 +19,16 @@ RUN cp /usr/lib/systemd/system/dbus.service /etc/systemd/system/; \
 
 VOLUME ["/run", "/tmp"]
 
+RUN curl -o /etc/yum.repos.d/CentOS-OpenShift-Origin.repo https://tdawson.fedorapeople.org/centos/CentOS-OpenShift-Origin.repo
+
 ## Install packages
-RUN dnf -y update && dnf -y install git golang hg tar make \
-  hostname bind-utils iproute iputils which procps-ng openssh-server \
-  # Node-specific packages
-  docker openvswitch bridge-utils ethtool iptables-services \
-  && dnf clean all
+RUN INSTALL_PKGS="git golang mercurial tar make \
+      hostname bind-utils iproute iputils which procps-ng openssh-server \
+      docker openvswitch bridge-utils ethtool iptables-services" && \
+    yum install -y $INSTALL_PKGS && \
+    rpm -V --nofiles $INSTALL_PKGS && \
+    yum clean all
+
 
 # sshd should be enabled as needed
 RUN systemctl disable sshd.service

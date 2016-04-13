@@ -6,8 +6,15 @@
 #
 # The standard name for this image is openshift/origin-pod
 #
-FROM scratch
+FROM centos:centos7
 
-ADD bin/pod /pod
+RUN curl -o /etc/yum.repos.d/CentOS-OpenShift-Origin.repo https://tdawson.fedorapeople.org/centos/CentOS-OpenShift-Origin.repo
+
+RUN INSTALL_PKGS="origin-pod" && \
+    yum install -y $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    yum clean all
+
+RUN ln -s /usr/bin/pod /pod
 
 ENTRYPOINT ["/pod"]

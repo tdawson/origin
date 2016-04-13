@@ -13,8 +13,9 @@ MAINTAINER Devan Goodwin <dgoodwin@redhat.com>
 # We need to install openvswitch for the client portions, the daemons are expected
 # to run in another container
 
-ADD https://copr.fedoraproject.org/coprs/maxamillion/origin-next/repo/epel-7/maxamillion-origin-next-epel-7.repo /etc/yum.repos.d/
-RUN INSTALL_PKGS="libmnl libnetfilter_conntrack openvswitch \
+RUN curl -o /etc/yum.repos.d/CentOS-OpenShift-Origin.repo https://tdawson.fedorapeople.org/centos/CentOS-OpenShift-Origin.repo
+
+RUN INSTALL_PKGS="origin-sdn-ovs libmnl libnetfilter_conntrack openvswitch \
     libnfnetlink iptables iproute bridge-utils procps-ng ethtool socat openssl \
     binutils xz kmod-libs kmod sysvinit-tools device-mapper-libs dbus \
     ceph-common iscsi-initiator-utils" && \
@@ -28,9 +29,6 @@ RUN mkdir -p \
 
 # All of the following are placed in images/node by hack/build-images.sh
 # They won't exist in the git checkout
-ADD bin/* /usr/bin/
-ADD conf/openshift-sdn-ovs.conf /usr/lib/systemd/system/origin-node.service.d/
-ADD lib/systemd/system/docker.service.d/docker-sdn-ovs.conf /usr/lib/systemd/system/docker.service.d/docker-sdn-ovs.conf
 ADD scripts/* /usr/local/bin/
 RUN chmod +x /usr/local/bin/* /usr/bin/openshift-*
 

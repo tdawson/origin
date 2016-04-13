@@ -6,7 +6,9 @@
 #
 FROM openshift/origin-base
 
-RUN INSTALL_PKGS="tree findutils epel-release" && \
+RUN curl -o /etc/yum.repos.d/CentOS-OpenShift-Origin.repo https://tdawson.fedorapeople.org/centos/CentOS-OpenShift-Origin.repo
+
+RUN INSTALL_PKGS="tree findutils origin-dockerregistry" && \
     yum install -y $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum clean all
@@ -20,4 +22,3 @@ ENV REGISTRY_CONFIGURATION_PATH /config.yml
 CMD DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_SERVICE_HOST}:${DOCKER_REGISTRY_SERVICE_PORT} /dockerregistry ${REGISTRY_CONFIGURATION_PATH}
 
 ADD config.yml $REGISTRY_CONFIGURATION_PATH
-ADD bin/dockerregistry /dockerregistry

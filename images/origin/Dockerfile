@@ -10,19 +10,14 @@
 #
 FROM openshift/origin-base
 
+RUN INSTALL_PKGS="origin" && \
+    yum install -y $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    yum clean all
+
 RUN mkdir -p /var/lib/origin
 
-ADD bin/openshift /usr/bin/openshift
-RUN ln -s /usr/bin/openshift /usr/bin/oc && \
-    ln -s /usr/bin/openshift /usr/bin/oadm && \
-    ln -s /usr/bin/openshift /usr/bin/osc && \
-    ln -s /usr/bin/openshift /usr/bin/osadm && \
-    ln -s /usr/bin/openshift /usr/bin/kubectl && \
-    ln -s /usr/bin/openshift /usr/bin/openshift-deploy && \
-    ln -s /usr/bin/openshift /usr/bin/openshift-docker-build && \
-    ln -s /usr/bin/openshift /usr/bin/openshift-sti-build && \
-    ln -s /usr/bin/openshift /usr/bin/openshift-f5-router && \
-    setcap 'cap_net_bind_service=ep' /usr/bin/openshift
+RUN setcap 'cap_net_bind_service=ep' /usr/bin/openshift
 
 ENV HOME /root
 ENV OPENSHIFT_CONTAINERIZED true
