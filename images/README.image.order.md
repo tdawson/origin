@@ -26,7 +26,9 @@
 
 === BUILDING ===
 ```
-cd origin/images
+git clone https://github.com/tdawson/origin.git
+cd origin/images/
+git checkout 2016-centos-images
 HERE=`pwd`
 cd ${HERE}/base
 docker build -t openshift/origin-base .
