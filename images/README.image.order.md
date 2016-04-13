@@ -25,7 +25,7 @@
     * pod {openshift/origin-pod}
 
 === BUILDING ===
-"""
+```
 cd origin/images
 HERE=`pwd`
 cd ${HERE}/base
@@ -64,8 +64,7 @@ cd ${HERE}/openvswitch
 docker build -t openshift/openvswitch .
 cd ${HERE}/pod
 docker build -t openshift/origin-pod .
-
-"""
+```
 
 == NOT BUILDABLE ==
 * openldap (?FROM openshift/openldap-2441-centos7:latest) {}
