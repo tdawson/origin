@@ -13,8 +13,6 @@ MAINTAINER Devan Goodwin <dgoodwin@redhat.com>
 # We need to install openvswitch for the client portions, the daemons are expected
 # to run in another container
 
-RUN curl -o /etc/yum.repos.d/CentOS-OpenShift-Origin.repo https://tdawson.fedorapeople.org/centos/CentOS-OpenShift-Origin.repo
-
 RUN INSTALL_PKGS="origin-sdn-ovs libmnl libnetfilter_conntrack openvswitch \
     libnfnetlink iptables iproute bridge-utils procps-ng ethtool socat openssl \
     binutils xz kmod-libs kmod sysvinit-tools device-mapper-libs dbus \

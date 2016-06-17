@@ -19,7 +19,12 @@ RUN cp /usr/lib/systemd/system/dbus.service /etc/systemd/system/; \
 
 VOLUME ["/run", "/tmp"]
 
-RUN curl -o /etc/yum.repos.d/CentOS-OpenShift-Origin.repo https://tdawson.fedorapeople.org/centos/CentOS-OpenShift-Origin.repo
+## Install origin repo
+RUN INSTALL_PKGS="centos-release-openshift-origin" && \
+    yum install -y $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    yum-config-manager --enable centos-openshift-origin-testing && \
+    yum clean all
 
 ## Install packages
 RUN INSTALL_PKGS="git golang mercurial tar make \
