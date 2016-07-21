@@ -11,5 +11,3 @@ RUN INSTALL_PKGS="which git tar wget hostname sysvinit-tools util-linux bsdtar \
     yum install -y $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum clean all
-
-RUN yum-config-manager --enable centos-openshift-origin-testing

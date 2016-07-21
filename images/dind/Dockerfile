@@ -23,7 +23,6 @@ VOLUME ["/run", "/tmp"]
 RUN INSTALL_PKGS="centos-release-openshift-origin" && \
     yum install -y $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
-    yum-config-manager --enable centos-openshift-origin-testing && \
     yum clean all
 
 ## Install packages
